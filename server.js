@@ -12,7 +12,7 @@ const {
 } = require("./utilities/bolt.js");
 
 //globals
-const RPIALERT_URL = "https://ddbruce.com/transfer/alerts.js";
+const RPIALERT_URL = "https://alert.rpi.edu/alerts.js";
 const USER_TOKEN = process.env.SLACK_USER_TOKEN;
 
 //package config
