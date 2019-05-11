@@ -1,0 +1,24 @@
+{
+  "name": "rpialert",
+  "version": "1.0.0",
+  "description": "A Slack integration to query RPI's alerting system and provide notifications on Slack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpiambulance/rpialert.git"
+  },
+  "author": "Dan Bruce <dan@ddbruce.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rpiambulance/rpialert/issues"
+  },
+  "homepage": "https://github.com/rpiambulance/rpialert#readme",
+  "dependencies": {
+    "@slack/bolt": "^1.0.1",
+    "axios": "^0.18.0",
+    "dotenv": "^8.0.0"
+  }
+}
