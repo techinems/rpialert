@@ -1,3 +1,7 @@
+[![Build Status](https://cloud.drone.io/api/badges/rpiambulance/person-v1/status.svg)](https://cloud.drone.io/rpiambulance/person-v1)
+
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+
 # RPIAlert
 
 **RPIAlert** queries RPI's alerting system and provides notification to Slack.
