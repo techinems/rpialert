@@ -4,6 +4,11 @@ name: deploy_rpialert
 steps:
   - name: deploy
     image: appleboy/drone-ssh
+    when:
+      branch:
+        - master
+      event:
+        - push
     settings:
       host: lp12.rpiambulance.com
       username: drone
@@ -12,14 +17,14 @@ steps:
       port: 22
       script:
         - docker-compose -f /drone/docker-compose.yml up -d --build rpialert
-      when:
-        branch:
-          - master
-        event:
-          - push
 
   - name: deploy-dev
     image: appleboy/drone-ssh
+    when:
+      branch:
+        - dev
+      event:
+        - push
     settings:
       host: lp12.rpiambulance.com
       username: drone
@@ -28,8 +33,3 @@ steps:
       port: 22
       script:
         - docker-compose -f /drone/docker-compose.yml up -d --build rpialert-dev
-      when:
-        branch:
-          - dev
-        event:
-          - push
