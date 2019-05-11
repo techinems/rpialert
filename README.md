@@ -1,4 +1,4 @@
-[![Build Status](https://cloud.drone.io/api/badges/rpiambulance/rpialert/status.svg)](https://cloud.drone.io/rpiambulance/person-v1)
+[![Build Status](https://cloud.drone.io/api/badges/rpiambulance/rpialert/status.svg)](https://cloud.drone.io/rpiambulance/rpialert)
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 
