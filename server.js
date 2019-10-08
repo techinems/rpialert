@@ -1,11 +1,14 @@
 //node packages
 const axios = require("axios");
+const crypto = require("crypto");
+
 require("dotenv").config();
 
 //local packages
 const {
   app: {
     client: {
+      channels: { history },
       chat: { postMessage }
     }
   }
@@ -17,22 +20,26 @@ const USER_TOKEN = process.env.SLACK_USER_TOKEN;
 
 //package config
 
-let text = "";
-let oldtext = "";
+let oldHash;
 
 const parseAlertData = body => {
   return body.substring(
     body.indexOf("alert_content = ") + 17,
     body.indexOf("alert_default = ") - 3
-  );
+  ).trim();
 };
 
 const rpialert = async () => {
   const { data } = await axios.get(RPIALERT_URL);
 
-  text = parseAlertData(data);
+  let text = parseAlertData(data);
+  if (text === "") {
+    return;
+  }
 
-  if (text != oldtext && text != "") {
+  let hash = crypto.createHash("md5").update(text).digest("hex");
+
+  if (hash !== oldHash) {
     postMessage({
       token: USER_TOKEN,
       channel: "alerts",
@@ -58,15 +65,52 @@ const rpialert = async () => {
             {
               type: "mrkdwn",
               text: " More info: https://alert.rpi.edu"
+            },
+            {
+              type: "plain_text",
+              text: hash
             }
           ]
         }
       ]
     });
   }
-  oldtext = text;
+  oldHash = hash;
 };
 
-setInterval(function() {
-  rpialert();
-}, 10000);
+const getOldHash = async () => {
+  let latest = "now";
+  for (;;) {
+    let results = await history({
+      token: USER_TOKEN,
+      channel: "alerts",
+      latest: latest
+    });
+
+    let messages = results.messages.filter((x) => x.subtype === "bot_message" && x.text === "RPI ALERT - <!channel>");
+    if (messages.length > 0) {
+      // Old style message, does not have hash, allow repost to have it add the hash
+      if (!messages[0].blocks[1].elements[2]) {
+        break;
+      }
+      oldHash = messages[0].blocks[1].elements[2].text;
+      break;
+    }
+    else {
+      if (results.has_more) {
+        latest = results.messages[results.messages.length-1].ts;
+      }
+      else {
+        // Could not find a previous bot message
+        break;
+      }
+    }
+  }
+};
+
+getOldHash().then(() => {
+  setInterval(function() {
+    rpialert();
+  }, 10000);
+});
+
