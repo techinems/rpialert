@@ -10,7 +10,7 @@ steps:
       event:
         - push
     settings:
-      host: lp12.rpiambulance.com
+      host: lp13.rpiambulance.com
       username: drone
       password:
         from_secret: SSH_PASSWORD
@@ -26,7 +26,7 @@ steps:
       event:
         - push
     settings:
-      host: lp12.rpiambulance.com
+      host: lp13.rpiambulance.com
       username: drone
       password:
         from_secret: SSH_PASSWORD
