@@ -16,6 +16,7 @@ const {
 
 //globals
 const RPIALERT_URL = process.env.RPIALERT_URL ||  "https://alert.rpi.edu/alerts.js";
+const ALERTS_CHANNEL = process.env.ALERTS_CHANNEL;
 const USER_TOKEN = process.env.SLACK_USER_TOKEN;
 
 //package config
