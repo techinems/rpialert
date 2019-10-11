@@ -8,7 +8,7 @@ require("dotenv").config();
 const {
   app: {
     client: {
-      channels: { history },
+      conversations: { history },
       chat: { postMessage }
     }
   }
