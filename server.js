@@ -43,7 +43,7 @@ const rpialert = async () => {
   if (hash !== oldHash) {
     postMessage({
       token: USER_TOKEN,
-      channel: "alerts",
+      channel: ALERTS_CHANNEL,
       unfurl_links: false,
       text: "RPI ALERT - <!channel>",
       blocks: [
@@ -84,7 +84,7 @@ const getOldHash = async () => {
   for (;;) {
     let results = await history({
       token: USER_TOKEN,
-      channel: "alerts",
+      channel: ALERTS_CHANNEL,
       latest: latest
     });
 
