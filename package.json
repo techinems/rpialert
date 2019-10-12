@@ -1,6 +1,6 @@
 {
   "name": "rpialert",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Slack integration to query RPI's alerting system and provide notifications on Slack",
   "main": "server.js",
   "scripts": {
