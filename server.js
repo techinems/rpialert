@@ -15,7 +15,8 @@ const {
 } = require("./utilities/bolt.js");
 
 //globals
-const RPIALERT_URL = process.env.RPIALERT_URL ||  "https://alert.rpi.edu/alerts.js";
+const RPIALERT_URL =
+  process.env.RPIALERT_URL || "https://alert.rpi.edu/alerts.js";
 const ALERTS_CHANNEL = process.env.ALERTS_CHANNEL;
 const USER_TOKEN = process.env.SLACK_USER_TOKEN;
 
@@ -24,10 +25,12 @@ const USER_TOKEN = process.env.SLACK_USER_TOKEN;
 let oldHash;
 
 const parseAlertData = body => {
-  return body.substring(
-    body.indexOf("alert_content = ") + 17,
-    body.indexOf("alert_default = ") - 3
-  ).trim();
+  return body
+    .substring(
+      body.indexOf("alert_content = ") + 17,
+      body.indexOf("alert_default = ") - 3
+    )
+    .trim();
 };
 
 const rpialert = async () => {
@@ -38,7 +41,10 @@ const rpialert = async () => {
     return;
   }
 
-  let hash = crypto.createHash("md5").update(text).digest("hex");
+  let hash = crypto
+    .createHash("md5")
+    .update(text)
+    .digest("hex");
 
   if (hash !== oldHash) {
     postMessage({
@@ -88,7 +94,9 @@ const getOldHash = async () => {
       latest: latest
     });
 
-    let messages = results.messages.filter((x) => x.subtype === "bot_message" && x.text === "RPI ALERT - <!channel>");
+    let messages = results.messages.filter(
+      x => x.subtype === "bot_message" && x.text === "RPI ALERT - <!channel>"
+    );
     if (messages.length > 0) {
       // Old style message, does not have hash, allow repost to have it add the hash
       if (!messages[0].blocks[1].elements[2]) {
@@ -96,12 +104,10 @@ const getOldHash = async () => {
       }
       oldHash = messages[0].blocks[1].elements[2].text;
       break;
-    }
-    else {
+    } else {
       if (results.has_more) {
-        latest = results.messages[results.messages.length-1].ts;
-      }
-      else {
+        latest = results.messages[results.messages.length - 1].ts;
+      } else {
         // Could not find a previous bot message
         break;
       }
@@ -114,4 +120,3 @@ getOldHash().then(() => {
     rpialert();
   }, 10000);
 });
-
