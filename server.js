@@ -99,7 +99,7 @@ async function getOldHash() {
       channel: ALERTS_CHANNEL,
       cursor: cursor
     });
-    filtered = filterBotMessages(messages);
+    const filtered = filterBotMessages(messages);
     if (filtered.length > 0) {
       if (filtered[0].blocks[1].elements[2]) {
         oldHash = filtered[0].blocks[1].elements[2].text;
