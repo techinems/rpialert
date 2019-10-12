@@ -86,7 +86,7 @@ const rpialert = async () => {
 };
 
 const getOldHash = async () => {
-  let latest = "now";
+  let latest = Date.now();
   for (;;) {
     let results = await history({
       token: USER_TOKEN,
