@@ -86,31 +86,28 @@ const rpialert = async () => {
 };
 
 function filterBotMessages(messages) {
-  return messages.filter((message) => {
-    return (
-      message.subtype === "bot_message"
-      && message.text === "RPI ALERT - <!channel>"
-    );
+  return messages.filter(({subtype, text}) => {
+    return subtype === "bot_message" && text === "RPI ALERT - <!channel>"
   });
 }
 
 async function getOldHash() {
   let cursor;
   do {
-    let results = await history({
+    const {messages, response_metadata} = await history({
       token: USER_TOKEN,
       channel: ALERTS_CHANNEL,
       cursor: cursor
     });
-    let messages = filterBotMessages(results.messages);
+    let messages = filterBotMessages(messages);
     if (messages.length > 0) {
       if (messages[0].blocks[1].elements[2]) {
         oldHash = messages[0].blocks[1].elements[2].text;
       }
     }
     else {
-      if (results.response_metadata && results.response_metadata.next_cursor) {
-        cursor = results.response_metadata.next_cursor;
+      if (response_metadata && response_metadata.next_cursor) {
+        cursor = response_metadata.next_cursor;
       }
     }
   } while(!oldHash && (cursor !== null || cursor !== undefined));
