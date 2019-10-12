@@ -85,35 +85,33 @@ const rpialert = async () => {
   oldHash = hash;
 };
 
-const getOldHash = async () => {
-  let latest = Date.now();
-  for (;;) {
-    let results = await history({
+function filterBotMessages(messages) {
+  return messages.filter(({subtype, text}) => {
+    return subtype === "bot_message" && text === "RPI ALERT - <!channel>"
+  });
+}
+
+async function getOldHash() {
+  let cursor;
+  do {
+    const {messages, response_metadata} = await history({
       token: USER_TOKEN,
       channel: ALERTS_CHANNEL,
-      latest: latest
+      cursor: cursor
     });
-
-    let messages = results.messages.filter(
-      x => x.subtype === "bot_message" && x.text === "RPI ALERT - <!channel>"
-    );
+    let messages = filterBotMessages(messages);
     if (messages.length > 0) {
-      // Old style message, does not have hash, allow repost to have it add the hash
-      if (!messages[0].blocks[1].elements[2]) {
-        break;
-      }
-      oldHash = messages[0].blocks[1].elements[2].text;
-      break;
-    } else {
-      if (results.has_more) {
-        latest = results.messages[results.messages.length - 1].ts;
-      } else {
-        // Could not find a previous bot message
-        break;
+      if (messages[0].blocks[1].elements[2]) {
+        oldHash = messages[0].blocks[1].elements[2].text;
       }
     }
-  }
-};
+    else {
+      if (response_metadata && response_metadata.next_cursor) {
+        cursor = response_metadata.next_cursor;
+      }
+    }
+  } while(!oldHash && (cursor !== null || cursor !== undefined));
+}
 
 getOldHash().then(() => {
   setInterval(function() {
