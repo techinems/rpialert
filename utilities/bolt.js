@@ -14,7 +14,7 @@ const app = new App({
 
 (async () => {
   await app.start(PORT);
-  console.log(`at-channel running on port ${PORT}...`);
+  console.log(`rpialert running on port ${PORT}...`);
 })();
 
 module.exports = { app };
