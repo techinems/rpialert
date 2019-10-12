@@ -99,10 +99,10 @@ async function getOldHash() {
       channel: ALERTS_CHANNEL,
       cursor: cursor
     });
-    messages = filterBotMessages(messages);
-    if (messages.length > 0) {
-      if (messages[0].blocks[1].elements[2]) {
-        oldHash = messages[0].blocks[1].elements[2].text;
+    filtered = filterBotMessages(messages);
+    if (filtered.length > 0) {
+      if (filtered[0].blocks[1].elements[2]) {
+        oldHash = filtered[0].blocks[1].elements[2].text;
       }
     }
     else {
